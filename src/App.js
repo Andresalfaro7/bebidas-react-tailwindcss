@@ -1,11 +1,13 @@
 import './App.css';
-import MyComponent from './components/MyComponent';
+import { BrowserRouter } from 'react-router-dom'
+import Router from "./components/Router";
 
 function App() {
   return (
     <div className="App">
-      <h1 className='text-red-600'>Este es mi proyecto de React</h1>
-      <MyComponent/>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
     </div>
   );
 }

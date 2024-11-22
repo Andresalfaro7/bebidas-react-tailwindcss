@@ -68,3 +68,12 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+Desafio 1
+Generar  dos botones en el contadro uno que aumente de dos en dos el numero
+y otro que restablezca a cero el contador.
+
+Desafio 2 
+Utilizar la maquetación para hacerla en componentes
+Por lo menos en 2 secciones se utilcen props para contenido del componente Hijo 
