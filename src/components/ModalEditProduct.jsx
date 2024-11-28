@@ -1,12 +1,50 @@
+import {useEffect, useState} from 'react';
+import axios from 'axios';
+
 const ModalEditProduct = (props) => {
+    const dataProductInit = {
+        nombre: "",
+        descripcion: "",
+        precio: 0
+    }
+
+    const [dataProduct, setDataProduct] = useState(dataProductInit);
+
+    const apiUrl = 'http://localhost/products/api.php';
+    let config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    }
+
+    const getProduct = async() =>{
+        const res = await axios.get(`${apiUrl}/productos/${props.idEdit}`, config);
+        console.log(res);
+        setDataProduct(res.data);
+    }
 
     const handelChange = (e) =>{
         //Actualizando el valor segun propiedad y valor que proviene del input
+        setDataProduct({...dataProduct, [e.target.name]: e.target.value});
     }
 
     const handelSubmit = async (e) =>{
-        
+        e.preventDefault();
+        await axios.put(`${apiUrl}/productos/${props.idEdit}`, dataProduct, config)
+        .then(response =>{
+            console.log(response);
+        })
+        .catch(err =>{
+            console.error(err);
+        });
+        props.setShowModal(false);
+        props.getAllProducts();
     }
+
+    useEffect(() => {
+      getProduct();
+    }, [])
 
     return (
         <>
@@ -36,12 +74,13 @@ const ModalEditProduct = (props) => {
                                 <div className="flex flex-wrap -m-2">
                                     <div className="p-2 w-1/2">
                                         <div className="relative">
-                                            <label htmlFor="name" className="leading-7 text-sm text-gray-600">Nombre</label>
+                                            <label htmlFor="nombre" className="leading-7 text-sm text-gray-600">Nombre</label>
                                             <input
                                                 className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                                                 type="text"
-                                                id="name"
-                                                name="name"
+                                                id="nombre"
+                                                name="nombre"
+                                                value={dataProduct.nombre}
                                                 onChange={handelChange}
                                                 placeholder='Ingresar el nombre del producto'
                                                 required
@@ -50,12 +89,13 @@ const ModalEditProduct = (props) => {
                                     </div>
                                     <div className="p-2 w-1/2">
                                         <div className="relative">
-                                            <label htmlFor="email" className="leading-7 text-sm text-gray-600">Precio</label>
+                                            <label htmlFor="precio" className="leading-7 text-sm text-gray-600">Precio</label>
                                             <input
                                                 className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                                                 type="number"
-                                                id="price"
-                                                name="price"
+                                                id="precio"
+                                                name="precio"
+                                                value={dataProduct.precio}
                                                 onChange={handelChange}
                                                 placeholder='00.00'
                                                 required
@@ -64,18 +104,19 @@ const ModalEditProduct = (props) => {
                                     </div>
                                     <div className="p-2 w-full">
                                         <div className="relative">
-                                            <label htmlFor="description" className="leading-7 text-sm text-gray-600">Descripción</label>
+                                            <label htmlFor="descripcion" className="leading-7 text-sm text-gray-600">Descripción</label>
                                             <textarea
                                                 className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
-                                                id="description"
-                                                name="description"
+                                                id="descripcion"
+                                                name="descripcion"
+                                                value={dataProduct.descripcion}
                                                 onChange={handelChange}
                                                 required
                                             ></textarea>
                                         </div>
                                     </div>
                                     <div className="p-2 w-full">
-                                        <button type='submit' className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Registrar Producto</button>
+                                        <button type='submit' className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Actualizar Producto</button>
                                     </div>
                                 </div>
                             </form>
